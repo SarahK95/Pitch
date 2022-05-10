@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% from 'macro.html' import displayPitches%}
+{% from 'macro.html' import displayComments%}
 {% block styles %}
 {{super()}}
 <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
@@ -7,6 +8,12 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+    <div class="row col-md-12">
+        <div class="col-md-8">{{wtf.quick_form(form)}}</div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
 <div>{{ displayPitches(pitches) }}</div>
-
+<div>{{displayComments(comments)}}</div>
 {% endblock %}
