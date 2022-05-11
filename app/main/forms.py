@@ -13,5 +13,9 @@ class CommentForm(FlaskForm):
     comment = TextAreaField('Comment', validators=[DataRequired()])
     submit = SubmitField('Comment')  
     
+class EditProfile(FlaskForm):
+    bio = TextAreaField('bio', validators=[DataRequired()])
+    submit = SubmitField('Pitch')    
+    
       
     
