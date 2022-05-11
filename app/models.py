@@ -2,6 +2,7 @@ from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin, current_user
 from . import login_manager
+from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -14,6 +15,9 @@ class User(UserMixin,db.Model):
     email = db.Column(db.String(255),unique = True,index = True)
     password = db.Column(db.String(255), nullable=False)
     bio = db.Column(db.String(255))
+    pitches = db.relationship('Pitches', backref='user', lazy='dynamic')
+    up_vote = db.relationship('UpVote', backref='user', lazy='dynamic')
+    comments = db.relationship('Comments', backref='comments', lazy='dynamic')
     
     def save(self):
         db.session.add(self)
@@ -44,9 +48,10 @@ class Pitches(db.Model):
     pitch = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     category = db.Column(db.String, nullable=False)
-    comment = db.relationship('Comment', backref='pitch', lazy='dynamic')
+    comments = db.relationship('Comment', backref='pitch', lazy='dynamic')
     up_vote = db.relationship('Upvote', backref='pitch', lazy='dynamic')
     down_vote = db.relationship('Downvote', backref='pitch', lazy='dynamic')
+    posted = db.Column(db.DateTime, default=datetime.utcnow)
     
     def save(self):
         db.session.add(self)
@@ -69,7 +74,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
-    comment = db.Column(db.Text())
+    comments = db.Column(db.Text())
     
     
     def save(self):
