@@ -1,4 +1,5 @@
 from . import db
+from werkzeug.security import generate_password_hash,check_password_hash
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -11,7 +12,18 @@ class User(db.Model):
         
     def delete(self):
         db.session.delete(self)
-        db.session.commit()    
+        db.session.commit()  
+        
+    @property   
+    def password(self):
+        raise AttributeError('You can only read this attribute')
+
+    @password.setter
+    def password(self, password):
+        self.password_encrypt = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_encrypt, password)      
 
     def __repr__(self):
         return f'User {self.username}'
