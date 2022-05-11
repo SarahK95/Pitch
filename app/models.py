@@ -50,6 +50,7 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
     comment = db.Column(db.Text())
     
+    
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -65,6 +66,42 @@ class Comment(db.Model):
 
     def __repr__(self):
         return f'Comments: {self.comment}'
+    
+class Upvote(db.Model):
+    __tablename__ = 'upvotes'
+    id = db.Column(db.Integer,primary_key=True)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
+    upvote = db.Column(db.Integer, default=1)
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def upvote(cls, id):
+        upvote_post = Upvote(user=current_user, post_id=id)
+        upvote_post.save()
+
+    @classmethod
+    def query_upvotes(cls, id):
+        upvote = Upvote.query.filter_by(pitch_id=id).all()
+        return upvote
+
+    @classmethod
+    def all_upvotes(cls):
+        upvotes = Upvote.query.order_by('id').all()
+        return upvotes
+
+    def __repr__(self):
+        return f'{self.user_id}:{self.pitch_id}'
+    
+    
+    
+    
+
+    
+    
+         
         
     
     
