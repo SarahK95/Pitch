@@ -1,0 +1,5 @@
+Hello {{user.username}}
+Welcome to Pitches
+An application where you can pitch/post/create product pitch, pickup lines, interview pitch and production pitch.
+You can also leave comments on pitches, upvote or downvote them.
+Have a good one!
