@@ -1,4 +1,3 @@
-from turtle import title
 from flask import render_template,url_for,redirect, flash, request
 from . import auth
 from ..models import User

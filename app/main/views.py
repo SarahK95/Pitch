@@ -1,4 +1,3 @@
-from unicodedata import category
 from flask import render_template,redirect, url_for
 from . import main
 from .forms import PitchForm, CommentForm, EditProfile

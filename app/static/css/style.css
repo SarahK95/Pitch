@@ -16,4 +16,11 @@ body{
     padding-top:70px;
     padding-bottom:130px;
     }
-    
+#login{
+    font-weight: bold;
+}
+
+#logo{
+    font-family: cursive;
+    font-size: 30px;
+}
