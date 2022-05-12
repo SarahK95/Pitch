@@ -1,0 +1,19 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.login-text{
+    font-family: cursive;
+}
+
+.bkimg{
+    background-image:url('https://cdn.pixabay.com/photo/2022/04/22/17/33/forest-7150274_960_720.jpg');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    z-index:1;
+    padding-top:70px;
+    padding-bottom:130px;
+    }
+    
