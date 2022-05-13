@@ -1,6 +1,6 @@
 from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import UserMixin, current_user
+from flask_login import UserMixin,current_user
 from . import login_manager
 from datetime import datetime
 
@@ -15,9 +15,7 @@ class User(UserMixin,db.Model):
     email = db.Column(db.String(255),unique = True,index = True)
     password = db.Column(db.String(255), nullable=False)
     bio = db.Column(db.String(255))
-    pitches = db.relationship('Pitches', backref='user', lazy='dynamic')
-    up_vote = db.relationship('UpVote', backref='user', lazy='dynamic')
-    comments = db.relationship('Comments', backref='comments', lazy='dynamic')
+   
     
     def save(self):
         db.session.add(self)
@@ -48,10 +46,11 @@ class Pitches(db.Model):
     pitch = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     category = db.Column(db.String, nullable=False)
-    comments = db.relationship('Comment', backref='pitch', lazy='dynamic')
-    up_vote = db.relationship('Upvote', backref='pitch', lazy='dynamic')
-    down_vote = db.relationship('Downvote', backref='pitch', lazy='dynamic')
+    comment = db.relationship('Comment', backref='pitch', lazy='dynamic')
+    upvote = db.relationship('Upvote', backref='pitch', lazy='dynamic')
+    downvote = db.relationship('Downvote', backref='pitch', lazy='dynamic')
     posted = db.Column(db.DateTime, default=datetime.utcnow)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
     
     def save(self):
         db.session.add(self)
@@ -73,8 +72,8 @@ class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
-    comments = db.Column(db.Text())
+    pitch_id = db.Column(db.Integer, db.ForeignKey('pitches.id'), nullable=False)
+    comment = db.Column(db.Text())
     
     
     def save(self):
@@ -82,8 +81,8 @@ class Comment(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_comments(cls, post_id):
-        comments = Comment.query.filter_by(post_id=post_id).all()
+    def get_comments(cls, pitch_id):
+        comments = Comment.query.filter_by(pitch_id=pitch_id).all()
         return comments
 
     def delete(self):
@@ -105,7 +104,7 @@ class Upvote(db.Model):
         db.session.commit()
 
     def upvote(cls, id):
-        upvote_pitch = Upvote(user=current_user, post_id=id)
+        upvote_pitch = Upvote(user=current_user, pitch_id=id)
         upvote_pitch.save()
 
     @classmethod

@@ -3,12 +3,10 @@ from . import auth
 from ..models import User
 from .forms import SignUpForm, LoginForm
 from .. import db
-from ..email import mail_message
+from ..email import email_message
 from flask_login import login_user, logout_user, login_required
 
-@auth.route('/login')
-def login():
-    return render_template('auth/login.html')
+
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -17,7 +15,7 @@ def signup():
         user = User(username=form.username.data, email=form.email.data, password=form.password.data)
         db.session.add(user)
         db.session.commit()
-        mail_message('Welcome to pitch', 'email/welcome_user', user.email, user=user)
+        email_message('Welcome to pitch', 'email/welcome_user', user.email, user=user)
         return redirect(url_for('auth.login'))
     
     title = "Create account"
