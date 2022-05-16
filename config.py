@@ -4,7 +4,8 @@ import os
 class Config:
    
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://sb:root@localhost/pitch'
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    
     
     #  email configurations
     MAIL_SERVER = 'smtp.googlemail.com'
@@ -22,7 +23,7 @@ class ProdConfig(Config):
     Args:
         Config: The parent configuration class with General configuration settings
     '''
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    pass
     
 class TestConfig(Config):
     '''
@@ -40,7 +41,7 @@ class DevConfig(Config):
     Args:
         Config: The parent configuration class with General configuration settings
     '''
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://sb:root@localhost/pitch'
+    pass
 
     DEBUG = True
     ENV = 'development'
