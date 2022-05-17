@@ -13,7 +13,8 @@ class User(UserMixin,db.Model):
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(255),unique = True,index = True)
-    password = db.Column(db.String(255), nullable=False)
+    password_hash = db.Column(db.String(255))
+    pass_secure  = db.Column(db.String(255))
     bio = db.Column(db.String(255))
    
     
@@ -31,10 +32,10 @@ class User(UserMixin,db.Model):
 
     @password.setter
     def password(self, password):
-        self.password_encrypt = generate_password_hash(password)
+        self.pass_secure = generate_password_hash(password)
 
-    def check_password(self, password):
-        return check_password_hash(self.password_encrypt, password)      
+    def verify_password(self, password):
+        return check_password_hash(self.pass_secure, password)      
 
     def __repr__(self):
         return f'User {self.username}'

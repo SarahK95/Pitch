@@ -15,7 +15,7 @@ def signup():
         user = User(username=form.username.data, email=form.email.data, password=form.password.data)
         db.session.add(user)
         db.session.commit()
-        email_message('Welcome to pitch', 'email/welcome_user', user.email, user=user)
+        # email_message('Welcome to pitch', 'email/welcome_user', user.email, user=user)
         return redirect(url_for('auth.login'))
     
     title = "Create account"
@@ -26,7 +26,7 @@ def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
         user = User.query.filter_by(email = login_form.email.data).first()
-        if user is not None and user.verify_password(login_form.password.data):
+        if user is not None and user.check_password(login_form.password.data):
             login_user(user,login_form.remember.data)
             return redirect(request.args.get('next') or url_for('main.index'))
 
