@@ -15,7 +15,7 @@ def index():
     return render_template('index.html', pitches=pitches ,product=product, pickup=pickup, interview=interview, promotion=promotion)
 
 @main.route('/pitches')
-@login_required
+
 def pitches():
     pitches= Pitches.query.all()
     upvote = Upvote.query.all()
@@ -23,21 +23,21 @@ def pitches():
     return render_template('pitch.html', pitches=pitches, upvote=upvote, user=user)
 
 @main.route('/new_pitch', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def new_pitch():
     form = PitchForm()
     if form.validate_on_submit():
         title = form.title.data
         pitch = form.pitch.data
         category = form.category.data
-        user_id = current_user._get_current_object().id
-        new_pitch = Pitches(pitch=pitch, title=title, category=category, user_id=user_id)
+        # user_id = current_user._get_current_object().id
+        new_pitch = Pitches(pitch=pitch, title=title, category=category )
         new_pitch.save()
         return redirect(url_for('main.index'))
-    return render_template('pitch.html', form=form)
+    return render_template('new_pitch.html', form=form)
 
 @main.route('/comment/<int:pitch_id>', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def comment(pitch_id):
     form = CommentForm()
     pitch = Pitches.query.get(pitch_id)
@@ -46,11 +46,11 @@ def comment(pitch_id):
     if form.validate_on_submit():
         comment = form.comment.data
         pitch_id = pitch_id
-        user_id = current_user._get_current_object().id
+        # user_id = current_user._get_current_object().id
         new_comment = Comment(
             comment=comment,
             pitch_id=pitch_id,
-            user_id=user_id
+            # user_id=user_id
         )
         new_comment.save()
         new_comments = [new_comment]
@@ -59,7 +59,7 @@ def comment(pitch_id):
     return render_template('comment.html', form=form, pitch=pitch, comments=comments, user=user)
 
 main.route('/user')
-@login_required
+# @login_required
 def user():
     username = current_user.username
     user = User.query.filter_by(username=username).first()
@@ -68,7 +68,7 @@ def user():
     return render_template('profile.html', user=user)
         
 @main.route('/user/<name>/edit_profile', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def editprofile(name):
     form = EditProfile()
     user = User.query.filter_by(username=name).first()
@@ -81,7 +81,7 @@ def editprofile(name):
     return render_template('profile/update_profile.html', form=form)
 
 @main.route('/upvote/<int:id>', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def upvote(id):
     pitch = Pitches.query.get(id)
     new_vote = Upvote(pitch=pitch, upvote=1)
@@ -90,7 +90,7 @@ def upvote(id):
 
 
 @main.route('/downvote/<int:id>', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def downvote(id):
     pitch = Pitches.query.get(id)
     new_down = Downvote(pitch=pitch, downvote=1)
