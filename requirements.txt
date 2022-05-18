@@ -2,6 +2,7 @@ alembic==1.7.7
 amqp==5.1.1
 billiard==3.6.4.0
 blinker==1.4
+celery==5.2.6
 certifi==2021.10.8
 charset-normalizer==2.0.12
 click==7.1.2
@@ -44,12 +45,13 @@ pipreqs==0.4.11
 platformdirs==2.5.2
 prompt-toolkit==3.0.29
 psycopg2-binary==2.9.3
+python-dotenv==0.20.0
 pytz==2022.1
 requests==2.27.1
 six==1.16.0
 SQLAlchemy==1.4.36
 tomli==2.0.1
-typing_extensions==4.2.0
+typing-extensions==4.2.0
 urllib3==1.26.9
 vine==5.0.0
 visitor==0.1.3
